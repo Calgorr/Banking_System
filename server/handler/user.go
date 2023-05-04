@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/Calgorr/Banking_System/server/authentication"
+	"github.com/Calgorr/Banking_System/server/model"
 	"github.com/labstack/echo/v4"
 )
 
@@ -24,4 +25,12 @@ func Login(c echo.Context) error {
 
 	c.Response().WriteHeader(http.StatusOK)
 	return json.NewEncoder(c.Response()).Encode(user)
+}
+
+func userValidation(user *model.User) bool {
+	user, err := db.GetUser(user.Username, user.Password)
+	if err != nil {
+		return false
+	}
+	return true
 }
