@@ -27,6 +27,17 @@ func Login(c echo.Context) error {
 	return json.NewEncoder(c.Response()).Encode(user)
 }
 
+func SignUp(c echo.Context) error {
+	var user *model.User
+	user, err := user.Bind(c)
+	err = db.AddUser(user)
+	if err != nil {
+		return c.String(http.StatusConflict, "user already exists")
+	}
+	c.String(http.StatusOK, "success")
+	return nil
+}
+
 func userValidation(user *model.User) bool {
 	user, err := db.GetUser(user.Username, user.Password)
 	if err != nil {
