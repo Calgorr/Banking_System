@@ -2,6 +2,7 @@ package database
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
 
 	"github.com/Calgorr/Banking_System/server/model"
@@ -13,7 +14,7 @@ const (
 	port     = 5432
 	user     = "calgor"
 	password = "ami1r3ali"
-	dbname   = "Bank"
+	dbname   = "bank"
 )
 
 var (
@@ -39,12 +40,22 @@ func AddUser(user *model.User) error {
 	connect()
 	defer db.Close()
 	_, err := db.Exec("Call insert_account($1,$2,$3,$4,$5,$6,$7,$8,$9)", user.Username, user.Password, user.Accountnumber, user.Firstname, user.Lastname, user.Nationalid, user.Dateofbirth, user.Type, user.Interestrate)
+	fmt.Println(err)
 	return err
 }
 
-func GetUser(user *model.User) error {
+func GetUser(user *model.User) (*model.User, error) {
+	var id int
+	u := new(model.User)
 	connect()
 	defer db.Close()
 	sqlStatment := "SELECT * FROM account account WHERE username=$1"
-	return db.QueryRow(sqlStatment, user.Username).Scan(&user.Username, &user.Password, &user.Accountnumber, &user.Firstname, &user.Lastname, &user.Nationalid, &user.Dateofbirth, &user.Type, &user.Interestrate)
+	err := db.QueryRow(sqlStatment, user.Username).Scan(&id, &u.Username, &u.Password, &u.Accountnumber, &u.Firstname, &u.Lastname, &u.Nationalid, &u.Dateofbirth, &u.Type, &u.Interestrate)
+	if err != nil {
+		return nil, err
+	}
+	if u.Password != user.Password {
+		return nil, errors.New("invalid credentials")
+	}
+	return u, nil
 }
