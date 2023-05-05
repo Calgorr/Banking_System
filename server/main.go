@@ -7,6 +7,6 @@ import (
 
 func main() {
 	e := echo.New()
-	handler.RegisterRoutes(e.Group("api"))
+	handler.RegisterRoutes(e.Group("api/"))
 	e.Start(":8080")
 }
