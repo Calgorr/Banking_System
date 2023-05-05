@@ -25,7 +25,5 @@ func (user *User) Bind(c echo.Context) (*User, error) {
 		return nil, c.String(http.StatusConflict, "bad request")
 	}
 	fmt.Println(user)
-	user.Dateofbirth = "2023-04-04"
-	user.Interestrate = 0
 	return user, nil
 }
