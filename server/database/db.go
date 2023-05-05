@@ -42,6 +42,9 @@ func AddUser(user *model.User) error {
 	return err
 }
 
-func GetUser(user *model.User) bool {
-
+func GetUser(user *model.User) error {
+	connect()
+	defer db.Close()
+	sqlStatment := "SELECT * FROM account account WHERE username=$1"
+	return db.QueryRow(sqlStatment, user.Username).Scan(&user.Username, &user.Password, &user.Accountnumber, &user.Firstname, &user.Lastname, &user.Nationalid, &user.Dateofbirth, &user.Type, &user.Interestrate)
 }
