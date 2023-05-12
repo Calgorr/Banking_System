@@ -66,3 +66,18 @@ func Login(user *model.User) error {
 	_, err := db.Exec(sqlStatement, user.Username, user.Password)
 	return err
 }
+func Deposit(event *model.Event) error {
+	connect()
+	defer db.Close()
+	sqlStatement := "CALL PROCEDURE deposit($1)"
+	_, err := db.Exec(sqlStatement, event.Amount)
+	return err
+}
+
+func Withdraw(event *model.Event) error {
+	connect()
+	defer db.Close()
+	sqlStatement := "CALL PROCEDURE withdraw($1)"
+	_, err := db.Exec(sqlStatement, event.Amount)
+	return err
+}
