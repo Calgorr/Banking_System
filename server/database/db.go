@@ -11,7 +11,7 @@ import (
 
 const (
 	host     = "localhost"
-	port     = 5432
+	port     = 8080
 	user     = "calgor"
 	password = "ami1r3ali"
 	dbname   = "bank"
