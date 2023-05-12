@@ -22,6 +22,7 @@ func Login(c echo.Context) error {
 		fmt.Println(err)
 		return c.String(http.StatusInternalServerError, "internal server error")
 	}
+	db.Login(user)
 	c.Response().Header().Set(echo.HeaderAuthorization, token)
 	return c.String(http.StatusOK, "success")
 }

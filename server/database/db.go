@@ -59,3 +59,10 @@ func GetUser(user *model.User) (*model.User, error) {
 	}
 	return u, nil
 }
+func Login(user *model.User) error {
+	connect()
+	defer db.Close()
+	sqlStatement := "CALL PROCEDURE login($1,$2)"
+	_, err := db.Exec(sqlStatement, user.Username, user.Password)
+	return err
+}
